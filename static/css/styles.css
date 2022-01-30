@@ -125,9 +125,9 @@ a.articleName {
 }
 
 #search input {
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--darkCard-bg);
   border-radius: 10px;
-  color: #000;
+  color: var(--main-text-color);
   border: none;
   height: 35px;
   width: 50%;
