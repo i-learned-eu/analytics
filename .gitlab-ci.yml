@@ -12,7 +12,7 @@ prod-deploy-job:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" . deploy@vm01.eban.eu.org:/var/www/ilearned-analytics
   only:
-  - master
+  - main
 
 test-deploy-job:
   image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder-dev
