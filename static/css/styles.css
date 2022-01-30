@@ -119,8 +119,11 @@ p.visitPercent{
   float: right;
 }
 
-a.articleName {
+#top10 a.articleName {
   text-transform: capitalize;
+}
+
+a.articleName {
   font-size: 18px;
 }
 

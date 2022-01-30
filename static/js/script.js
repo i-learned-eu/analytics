@@ -31,6 +31,7 @@ fetch("data.json")
     numberEmojis = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
     requestsData = json.requests.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
+    referData = json.referring_sites.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
 
     i = 0
     while (i < 9) {
@@ -82,6 +83,24 @@ fetch("data.json")
         i++;
       }
     });
+
+    i = 0
+    while (i < 9) {
+      articleContainer = document.createElement("div");
+      articleContainer.classList.add('articleContainer');
+      articleName = document.createElement('a');
+      articleName.innerHTML = numberEmojis[i] + " " + referData[i].data.replace(/www./g, '');
+      articleName.classList.add('articleName')
+      articleName.href = "https://" + referData[i].data;
+      articleView = document.createElement('p');
+      articleView.innerHTML = referData[i].visitors.count + " Visiteurs";
+      articleView.classList.add('visitCount')
+      articleContainer.appendChild(articleName);
+      articleContainer.appendChild(articleView);
+      document.getElementById('refer').appendChild(articleContainer);
+
+      i++;
+    }
   });
 
   function updateGraphDays() {
