@@ -6,7 +6,7 @@ fetch("data.json")
     i = 0;
 
     document.getElementById('today').children[1].innerHTML = json.visitors.data[0].visitors.count + " Visites";
-    document.getElementById('today').children[2].innerHTML = (json.visitors.data[0].visitors.count - json.visitors.data[1].visitors.count) / json.visitors.data[1].visitors.count * 100 + "%"
+    document.getElementById('today').children[2].innerHTML = Math.round((json.visitors.data[0].visitors.count - json.visitors.data[1].visitors.count) / json.visitors.data[1].visitors.count * 100) + "%"
 
     weekViews = 0;
     while (i < 7) {
