@@ -161,7 +161,7 @@ a.articleName {
 
 @media screen and (max-width: 640px) {
   body {
-    margin: 80px 30px;
+    margin: 40px 30px;
   }
 
   .lightCard {
@@ -184,5 +184,9 @@ a.articleName {
 
   .darkCard p.visitCount {
     font-size: 13px;
+  }
+
+  .smallStats {
+    margin-bottom: 20px;
   }
 }
