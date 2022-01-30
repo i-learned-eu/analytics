@@ -51,9 +51,31 @@ fetch("data.json")
       i++;
     }
 
-    const fuse = new Fuse(json.requests.data, {
+    availableForSearch = json.requests.data
+
+    availableForSearch = availableForSearch.filter(function(obj) {
+      loc = "https://ilearned.eu/" + obj.data + ".html"
+      hasVal = false;
+
+      if ((obj.data.includes("author")) || (obj.data.includes("about"))) {
+        hasVal = true;
+      } else {
+        for (let key in tipuesearch.pages) {
+          if (tipuesearch.pages[key].loc == loc) {
+            hasVal = true;
+            break;
+          }
+        }
+      }
+
+      return hasVal;
+    });
+
+    const fuse = new Fuse(availableForSearch, {
       keys: ['data']
     })
+
+    json.requests.data
 
     document.getElementById("searchInput").addEventListener("input", function(e) {
       searchResult = fuse.search(this.value);
@@ -61,8 +83,6 @@ fetch("data.json")
       while (document.getElementById('search').childNodes.length > 5) {
         document.getElementById('search').removeChild(document.getElementById('search').lastChild);
       }
-
-      console.log(searchResult)
 
       i = 0
       while (i < 6) {
@@ -103,218 +123,218 @@ fetch("data.json")
     }
   });
 
-  function updateGraphDays() {
-    fetch("data.json")
-      .then(response => response.json())
-      .then(function(json) {
-        days = []
-        viewByDay = []
-        i = 14
-        while (i > -1) {
-          days.push(json.visitors.data[i].data.slice(-2));
-          viewByDay.push(json.visitors.data[i].visitors.count)
-          i--;
-        }
-        ctx = document.getElementById('graphCanvas').getContext('2d');
-        document.querySelector(".button.active").classList.remove("active")
-        document.querySelectorAll(".button")[0].classList.add("active")
-        if (typeof myChart != "undefined") {
-          myChart.destroy();
-        }
-        myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: days,
-            datasets: [{
-              label: 'Visites par jour',
-              data: viewByDay,
-              backgroundColor: [
-                '#D83D3D',
-                "#973333"
-              ],
-              borderRadius: 15,
-              borderSkipped: false,
-              barThickness: 12
-          }]
-          },
-          options: {
-            plugins: {
-              legend: {
-                display: false
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
-              },
-              x: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
-              },
-            },
-          }
-        });
-      });
-  }
-
-  function updateGraphMonths() {
-    fetch("data.json")
-      .then(response => response.json())
-      .then(function(json) {
-        document.querySelector(".button.active").classList.remove("active")
-        document.querySelectorAll(".button")[1].classList.add("active")
-
-        months = []
-        viewByMonth = []
-        i = 0
-        currentMonth = json.visitors.data[i].data.slice(4, -2);
-        ii = 0;
-        while (i < 12) {
-          thisMonthView = 0
-          while (json.visitors.data[ii].data.slice(4, -2) == currentMonth) {
-            if (ii < json.visitors.data.length - 1) {
-              thisMonthView += json.visitors.data[ii].visitors.count
-              ii++;
-            } else {
-              break;
-            }
-          }
-
-          currentMonth = json.visitors.data[ii - 1].data.slice(4, -2)
-
-          viewByMonth.push(thisMonthView)
-          months.push(currentMonth)
-
-          currentMonth = json.visitors.data[ii].data.slice(4, -2)
-
-          i++;
-        }
-        viewByMonth.reverse();
-        months.reverse();
-
-        ctx = document.getElementById('graphCanvas').getContext('2d');
+function updateGraphDays() {
+  fetch("data.json")
+    .then(response => response.json())
+    .then(function(json) {
+      days = []
+      viewByDay = []
+      i = 14
+      while (i > -1) {
+        days.push(json.visitors.data[i].data.slice(-2));
+        viewByDay.push(json.visitors.data[i].visitors.count)
+        i--;
+      }
+      ctx = document.getElementById('graphCanvas').getContext('2d');
+      document.querySelector(".button.active").classList.remove("active")
+      document.querySelectorAll(".button")[0].classList.add("active")
+      if (typeof myChart != "undefined") {
         myChart.destroy();
-        myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: months,
-            datasets: [{
-              label: 'Visites ce mois',
-              data: viewByMonth,
-              backgroundColor: [
-                '#D83D3D',
-                "#973333"
-              ],
-              borderRadius: 15,
-              borderSkipped: false,
-              barThickness: 12
+      }
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: days,
+          datasets: [{
+            label: 'Visites par jour',
+            data: viewByDay,
+            backgroundColor: [
+              '#D83D3D',
+              "#973333"
+            ],
+            borderRadius: 15,
+            borderSkipped: false,
+            barThickness: 12
           }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false
+            },
           },
-          options: {
-            plugins: {
-              legend: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
                 display: false
               },
             },
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
-              },
-              x: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
+            x: {
+              beginAtZero: true,
+              grid: {
+                display: false
               },
             },
-          }
-        });
-      });
-  }
-
-  function updateGraphYears() {
-    fetch("data.json")
-      .then(response => response.json())
-      .then(function(json) {
-        document.querySelector(".button.active").classList.remove("active")
-        document.querySelectorAll(".button")[2].classList.add("active")
-
-        years = []
-        viewByYear = []
-        i = 0
-        currentYear = json.visitors.data[i].data.slice(2, -4);
-        ii = 0;
-        while (i <= json.visitors.data[0].data.slice(2, -4) - json.visitors.data.at(-1).data.slice(2, -4)) {
-          thisYearView = 0
-          while (json.visitors.data[ii].data.slice(2, -4) == currentYear) {
-            if (ii < json.visitors.data.length - 1) {
-              thisYearView += json.visitors.data[ii].visitors.count;
-              ii++;
-            } else {
-              break;
-            }
-          }
-
-          currentYear = json.visitors.data[ii - 1].data.slice(2, -4)
-
-          viewByYear.push(thisYearView)
-          years.push(currentYear)
-
-          currentYear = json.visitors.data[ii].data.slice(2, -4)
-
-          i++;
+          },
         }
-        viewByYear.reverse();
-        years.reverse();
+      });
+    });
+}
 
-        ctx = document.getElementById('graphCanvas').getContext('2d');
-        myChart.destroy();
-        myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: years,
-            datasets: [{
-              label: 'Visites ce mois',
-              data: viewByYear,
-              backgroundColor: [
-                '#D83D3D',
-                "#973333"
-              ],
-              borderRadius: 15,
-              borderSkipped: false,
-              barThickness: 12
+function updateGraphMonths() {
+  fetch("data.json")
+    .then(response => response.json())
+    .then(function(json) {
+      document.querySelector(".button.active").classList.remove("active")
+      document.querySelectorAll(".button")[1].classList.add("active")
+
+      months = []
+      viewByMonth = []
+      i = 0
+      currentMonth = json.visitors.data[i].data.slice(4, -2);
+      ii = 0;
+      while (i < 12) {
+        thisMonthView = 0
+        while (json.visitors.data[ii].data.slice(4, -2) == currentMonth) {
+          if (ii < json.visitors.data.length - 1) {
+            thisMonthView += json.visitors.data[ii].visitors.count
+            ii++;
+          } else {
+            break;
+          }
+        }
+
+        currentMonth = json.visitors.data[ii - 1].data.slice(4, -2)
+
+        viewByMonth.push(thisMonthView)
+        months.push(currentMonth)
+
+        currentMonth = json.visitors.data[ii].data.slice(4, -2)
+
+        i++;
+      }
+      viewByMonth.reverse();
+      months.reverse();
+
+      ctx = document.getElementById('graphCanvas').getContext('2d');
+      myChart.destroy();
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [{
+            label: 'Visites ce mois',
+            data: viewByMonth,
+            backgroundColor: [
+              '#D83D3D',
+              "#973333"
+            ],
+            borderRadius: 15,
+            borderSkipped: false,
+            barThickness: 12
           }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false
+            },
           },
-          options: {
-            plugins: {
-              legend: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
                 display: false
               },
             },
-            scales: {
-              y: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
-              },
-              x: {
-                beginAtZero: true,
-                grid: {
-                  display: false
-                },
+            x: {
+              beginAtZero: true,
+              grid: {
+                display: false
               },
             },
-          }
-        });
+          },
+        }
       });
-  }
+    });
+}
+
+function updateGraphYears() {
+  fetch("data.json")
+    .then(response => response.json())
+    .then(function(json) {
+      document.querySelector(".button.active").classList.remove("active")
+      document.querySelectorAll(".button")[2].classList.add("active")
+
+      years = []
+      viewByYear = []
+      i = 0
+      currentYear = json.visitors.data[i].data.slice(2, -4);
+      ii = 0;
+      while (i <= json.visitors.data[0].data.slice(2, -4) - json.visitors.data.at(-1).data.slice(2, -4)) {
+        thisYearView = 0
+        while (json.visitors.data[ii].data.slice(2, -4) == currentYear) {
+          if (ii < json.visitors.data.length - 1) {
+            thisYearView += json.visitors.data[ii].visitors.count;
+            ii++;
+          } else {
+            break;
+          }
+        }
+
+        currentYear = json.visitors.data[ii - 1].data.slice(2, -4)
+
+        viewByYear.push(thisYearView)
+        years.push(currentYear)
+
+        currentYear = json.visitors.data[ii].data.slice(2, -4)
+
+        i++;
+      }
+      viewByYear.reverse();
+      years.reverse();
+
+      ctx = document.getElementById('graphCanvas').getContext('2d');
+      myChart.destroy();
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            label: 'Visites ce mois',
+            data: viewByYear,
+            backgroundColor: [
+              '#D83D3D',
+              "#973333"
+            ],
+            borderRadius: 15,
+            borderSkipped: false,
+            barThickness: 12
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              },
+            },
+            x: {
+              beginAtZero: true,
+              grid: {
+                display: false
+              },
+            },
+          },
+        }
+      });
+    });
+}
 updateGraphDays()
