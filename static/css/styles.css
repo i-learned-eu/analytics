@@ -166,12 +166,12 @@ a.articleName {
 
   .lightCard {
     margin-top: 10px;
-    width: 180px;
+    width: 45%;
     height: 170px;
   }
 
   .lightCard h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .darkCard {
@@ -183,6 +183,6 @@ a.articleName {
   }
 
   .darkCard p.visitCount {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
