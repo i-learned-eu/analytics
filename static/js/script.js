@@ -122,7 +122,7 @@ fetch("data.json")
         articleName = document.createElement('a');
         articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
         articleName.classList.add('articleName')
-        articleName.href = "https://ilearned.eu/" + foundElement.data + ".html";
+        articleName.href = "https://" + foundElement.data;
         articleView = document.createElement('p');
         articleView.innerHTML = foundElement.visitors.count + " Visiteurs";
         articleView.classList.add('visitCount')
