@@ -119,7 +119,7 @@ p.visitPercent{
   float: right;
 }
 
-#top10 a.articleName {
+#top10 a.articleName, #latest a.articleName {
   text-transform: capitalize;
 }
 

@@ -75,8 +75,6 @@ fetch("data.json")
       keys: ['data']
     })
 
-    json.requests.data
-
     document.getElementById("searchInput").addEventListener("input", function(e) {
       searchResult = fuse.search(this.value);
 
@@ -118,6 +116,28 @@ fetch("data.json")
       articleContainer.appendChild(articleName);
       articleContainer.appendChild(articleView);
       document.getElementById('refer').appendChild(articleContainer);
+
+      i++;
+    }
+
+    timeEmojis = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘"]
+
+    i = 0
+    while (i < 9) {
+      articleSlug = tipuesearch.pages[i].loc.slice(20, -5)
+      articleData = json.requests.data.find(element => element.data == articleSlug)
+      articleContainer = document.createElement("div");
+      articleContainer.classList.add('articleContainer');
+      articleName = document.createElement('a');
+      articleName.innerHTML = timeEmojis[i] + " " + articleData.data.replace(/-/g, ' ').replace(/_/g, ' ');
+      articleName.classList.add('articleName')
+      articleName.href = "https://" + articleData.data;
+      articleView = document.createElement('p');
+      articleView.innerHTML = articleData.visitors.count + " Visiteurs";
+      articleView.classList.add('visitCount')
+      articleContainer.appendChild(articleName);
+      articleContainer.appendChild(articleView);
+      document.getElementById('latest').appendChild(articleContainer);
 
       i++;
     }
