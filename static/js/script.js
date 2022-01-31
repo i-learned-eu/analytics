@@ -102,6 +102,38 @@ fetch("data.json")
       }
     });
 
+
+    const fuse2 = new Fuse(json.referring_sites.data, {
+      keys: ['data']
+    })
+
+    document.getElementById("referrerSearchInput").addEventListener("input", function(e) {
+      searchResult = fuse2.search(this.value);
+
+      while (document.getElementById('referrerSearch').childNodes.length > 5) {
+        document.getElementById('referrerSearch').removeChild(document.getElementById('referrerSearch').lastChild);
+      }
+
+      i = 0
+      while (i < 6) {
+        foundElement = searchResult[i].item
+        articleContainer = document.createElement("div");
+        articleContainer.classList.add('articleContainer');
+        articleName = document.createElement('a');
+        articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
+        articleName.classList.add('articleName')
+        articleName.href = "https://ilearned.eu/" + foundElement.data + ".html";
+        articleView = document.createElement('p');
+        articleView.innerHTML = foundElement.visitors.count + " Visiteurs";
+        articleView.classList.add('visitCount')
+        articleContainer.appendChild(articleName);
+        articleContainer.appendChild(articleView);
+        document.getElementById('referrerSearch').appendChild(articleContainer);
+
+        i++;
+      }
+    });
+
     i = 0
     while (i < 9) {
       articleContainer = document.createElement("div");
