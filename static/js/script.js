@@ -1,11 +1,13 @@
 dataSources = [
   {
     name: "Blog FR",
-    file: "blog-french.json"
+    file: "blog-french.json",
+    tipueUri: "https://ilearned.eu/tipuesearch_content.js"
   },
   {
     name: "Blog EN",
-    file: "blog-english.json"
+    file: "blog-english.json",
+    tipueUri: "https://en.ilearned.eu/tipuesearch_content.js"
   }
 ]
 
@@ -69,7 +71,16 @@ function updateData(dataSource) {
 
       document.getElementById('total').children[1].innerHTML = json.general.unique_visitors + " Visites";
 
-      document.getElementById('articleCount').children[1].innerHTML = tipuesearch.pages.length + " Articles publiés";
+      if (typeof dataSource.tipueUri != "undefined") {
+        var httpClient = new HttpClient();
+        httpClient.get(dataSource.tipueUri, function(response) {
+          console.log(response)
+          document.getElementById('articleCount').children[1].innerHTML = response.pages.length + " Articles publiés";
+        });
+      } else {
+        document.getElementById('articleCount').remove();
+      }
+
 
       numberEmojis = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
