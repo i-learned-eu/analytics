@@ -23,7 +23,7 @@
   --cta-text-color: #f0b6b6;
   --card-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.05);
   --lightCard-bg: rgba(255, 255, 255, 0.1);
-  --darkCard-bg: rgba(0, 0, 0, 0.3);
+  --darkCard-bg: rgba(0, 0, 0, 0.8);
 }
 
 @media (prefers-color-scheme: light) {
@@ -127,7 +127,7 @@ a.articleName {
   font-size: 18px;
 }
 
-#search input, #referrerSearch input {
+#search input, #referrerSearch input, #selectDataSource {
   background: var(--darkCard-bg);
   border-radius: 10px;
   color: var(--main-text-color);
@@ -137,6 +137,10 @@ a.articleName {
   margin: 15px 25%;
   padding: 10px 20px;
   font-size: 16px;
+}
+
+#selectDataSource {
+  padding: 3px 10px;
 }
 
 #graph a.button {

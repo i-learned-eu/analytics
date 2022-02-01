@@ -1,182 +1,226 @@
-fetch("data.json")
-  .then(response => response.json())
-  .then(function(json) {
-    console.log(json)
+dataSources = [
+  {
+    name: "Blog FR",
+    file: "blog-french.json"
+  },
+  {
+    name: "Blog EN",
+    file: "blog-english.json"
+  }
+]
 
-    i = 0;
+dataSource = dataSources[0].file
 
-    document.getElementById('today').children[1].innerHTML = json.visitors.data[0].visitors.count + " Visites";
-    document.getElementById('today').children[2].innerHTML = Math.round((json.visitors.data[0].visitors.count - json.visitors.data[1].visitors.count) / json.visitors.data[1].visitors.count * 100) + "%"
+for (var i = 0; i < dataSources.length; i++) {
+  option = document.createElement("option");
+  option.innerHTML = dataSources[i].name;
+  option.setAttribute('file', dataSources[i].file);
+  document.getElementById('selectDataSource').appendChild(option);
+}
 
-    weekViews = 0;
-    while (i < 7) {
-      weekViews = json.visitors.data[i].visitors.count + weekViews;
-      i++;
-    }
+document.getElementById('selectDataSource').addEventListener('change', function () {
+  dataSource = dataSources[this.selectedIndex].file
+  updateData(dataSource)
+})
 
-    i = 7
-    lastWeekViews = 0;
-    while (i < 14) {
-      lastWeekViews = json.visitors.data[i].visitors.count + lastWeekViews;
-      i++;
-    }
+updateData(dataSources[0].file)
 
-    document.getElementById('week').children[1].innerHTML = weekViews + " Visites";
-    document.getElementById('week').children[2].innerHTML = Math.round((weekViews - lastWeekViews) / lastWeekViews * 100) + "%"
+function updateData(dataSource) {
+  while (document.getElementById('search').childNodes.length > 5) {
+    document.getElementById('search').removeChild(document.getElementById('search').lastChild);
+  }
+  while (document.getElementById('latest').childNodes.length > 2) {
+    document.getElementById('latest').removeChild(document.getElementById('latest').lastChild);
+  }
 
-    document.getElementById('total').children[1].innerHTML = json.general.unique_visitors + " Visites";
+  while (document.getElementById('top10').childNodes.length > 2) {
+    document.getElementById('top10').removeChild(document.getElementById('top10').lastChild);
+  }
 
-    document.getElementById('articleCount').children[1].innerHTML = tipuesearch.pages.length + " Articles publiés";
+  while (document.getElementById('refer').childNodes.length > 2) {
+    document.getElementById('refer').removeChild(document.getElementById('refer').lastChild);
+  }
 
-    numberEmojis = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+  fetch(dataSource)
+    .then(response => response.json())
+    .then(function(json) {
+      console.log(json)
 
-    requestsData = json.requests.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
-    referData = json.referring_sites.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
+      i = 0;
 
-    i = 0
-    while (i < 9) {
-      articleContainer = document.createElement("div");
-      articleContainer.classList.add('articleContainer');
-      articleName = document.createElement('a');
-      articleName.innerHTML = numberEmojis[i] + " " + requestsData[i].data.replace(/-/g, ' ').replace(/_/g, ' ');
-      articleName.classList.add('articleName')
-      articleName.href = "https://ilearned.eu/" + requestsData[i].data + ".html";
-      articleView = document.createElement('p');
-      articleView.innerHTML = requestsData[i].visitors.count + " Vues";
-      articleView.classList.add('visitCount')
-      articleContainer.appendChild(articleName);
-      articleContainer.appendChild(articleView);
-      document.getElementById('top10').appendChild(articleContainer);
+      document.getElementById('today').children[1].innerHTML = json.visitors.data[0].visitors.count + " Visites";
+      document.getElementById('today').children[2].innerHTML = Math.round((json.visitors.data[0].visitors.count - json.visitors.data[1].visitors.count) / json.visitors.data[1].visitors.count * 100) + "%"
 
-      i++;
-    }
+      weekViews = 0;
+      while (i < 7) {
+        weekViews = json.visitors.data[i].visitors.count + weekViews;
+        i++;
+      }
 
-    availableForSearch = json.requests.data
+      i = 7
+      lastWeekViews = 0;
+      while (i < 14) {
+        lastWeekViews = json.visitors.data[i].visitors.count + lastWeekViews;
+        i++;
+      }
 
-    availableForSearch = availableForSearch.filter(function(obj) {
-      loc = "https://ilearned.eu/" + obj.data + ".html"
-      hasVal = false;
+      document.getElementById('week').children[1].innerHTML = weekViews + " Visites";
+      document.getElementById('week').children[2].innerHTML = Math.round((weekViews - lastWeekViews) / lastWeekViews * 100) + "%"
 
-      if ((obj.data.includes("author")) || (obj.data.includes("about"))) {
-        hasVal = true;
-      } else {
-        for (let key in tipuesearch.pages) {
-          if (tipuesearch.pages[key].loc == loc) {
-            hasVal = true;
-            break;
+      document.getElementById('total').children[1].innerHTML = json.general.unique_visitors + " Visites";
+
+      document.getElementById('articleCount').children[1].innerHTML = tipuesearch.pages.length + " Articles publiés";
+
+      numberEmojis = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+
+      requestsData = json.requests.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
+      referData = json.referring_sites.data.sort((a, b) => (a.visitors.count < b.visitors.count) ? 1 : ((b.visitors.count < a.visitors.count) ? -1 : 0))
+
+      i = 0
+      while (i < 9) {
+        articleContainer = document.createElement("div");
+        articleContainer.classList.add('articleContainer');
+        articleName = document.createElement('a');
+        articleName.innerHTML = numberEmojis[i] + " " + requestsData[i].data.replace(/-/g, ' ').replace(/_/g, ' ');
+        articleName.classList.add('articleName')
+        articleName.href = "https://ilearned.eu/" + requestsData[i].data + ".html";
+        articleView = document.createElement('p');
+        articleView.innerHTML = requestsData[i].visitors.count + " Vues";
+        articleView.classList.add('visitCount')
+        articleContainer.appendChild(articleName);
+        articleContainer.appendChild(articleView);
+        document.getElementById('top10').appendChild(articleContainer);
+
+        i++;
+      }
+
+      availableForSearch = json.requests.data
+
+      availableForSearch = availableForSearch.filter(function(obj) {
+        loc = "https://ilearned.eu/" + obj.data + ".html"
+        hasVal = false;
+
+        if ((obj.data.includes("author")) || (obj.data.includes("about"))) {
+          hasVal = true;
+        } else {
+          for (let key in tipuesearch.pages) {
+            if (tipuesearch.pages[key].loc == loc) {
+              hasVal = true;
+              break;
+            }
           }
         }
-      }
 
-      return hasVal;
-    });
+        return hasVal;
+      });
 
-    const fuse = new Fuse(availableForSearch, {
-      keys: ['data']
-    })
+      const fuse = new Fuse(availableForSearch, {
+        keys: ['data']
+      })
 
-    document.getElementById("searchInput").addEventListener("input", function(e) {
-      searchResult = fuse.search(this.value);
+      document.getElementById("searchInput").addEventListener("input", function(e) {
+        searchResult = fuse.search(this.value);
 
-      while (document.getElementById('search').childNodes.length > 5) {
-        document.getElementById('search').removeChild(document.getElementById('search').lastChild);
-      }
+        while (document.getElementById('search').childNodes.length > 5) {
+          document.getElementById('search').removeChild(document.getElementById('search').lastChild);
+        }
+
+        i = 0
+        while (i < 6) {
+          foundElement = searchResult[i].item
+          articleContainer = document.createElement("div");
+          articleContainer.classList.add('articleContainer');
+          articleName = document.createElement('a');
+          articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
+          articleName.classList.add('articleName')
+          articleName.href = "https://ilearned.eu/" + foundElement.data + ".html";
+          articleView = document.createElement('p');
+          articleView.innerHTML = foundElement.visitors.count + " Vues";
+          articleView.classList.add('visitCount')
+          articleContainer.appendChild(articleName);
+          articleContainer.appendChild(articleView);
+          document.getElementById('search').appendChild(articleContainer);
+
+          i++;
+        }
+      });
+
+
+      const fuse2 = new Fuse(json.referring_sites.data, {
+        keys: ['data']
+      })
+
+      document.getElementById("referrerSearchInput").addEventListener("input", function(e) {
+        searchResult = fuse2.search(this.value);
+
+        while (document.getElementById('referrerSearch').childNodes.length > 5) {
+          document.getElementById('referrerSearch').removeChild(document.getElementById('referrerSearch').lastChild);
+        }
+
+        i = 0
+        while (i < 6) {
+          foundElement = searchResult[i].item
+          articleContainer = document.createElement("div");
+          articleContainer.classList.add('articleContainer');
+          articleName = document.createElement('a');
+          articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
+          articleName.classList.add('articleName')
+          articleName.href = "https://" + foundElement.data;
+          articleView = document.createElement('p');
+          articleView.innerHTML = foundElement.visitors.count + " Visiteurs";
+          articleView.classList.add('visitCount')
+          articleContainer.appendChild(articleName);
+          articleContainer.appendChild(articleView);
+          document.getElementById('referrerSearch').appendChild(articleContainer);
+
+          i++;
+        }
+      });
 
       i = 0
-      while (i < 6) {
-        foundElement = searchResult[i].item
+      while (i < 9) {
         articleContainer = document.createElement("div");
         articleContainer.classList.add('articleContainer');
         articleName = document.createElement('a');
-        articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
+        articleName.innerHTML = numberEmojis[i] + " " + referData[i].data.replace(/www./g, '');
         articleName.classList.add('articleName')
-        articleName.href = "https://ilearned.eu/" + foundElement.data + ".html";
+        articleName.href = "https://" + referData[i].data;
         articleView = document.createElement('p');
-        articleView.innerHTML = foundElement.visitors.count + " Vues";
+        articleView.innerHTML = referData[i].visitors.count + " Visiteurs";
         articleView.classList.add('visitCount')
         articleContainer.appendChild(articleName);
         articleContainer.appendChild(articleView);
-        document.getElementById('search').appendChild(articleContainer);
+        document.getElementById('refer').appendChild(articleContainer);
+
+        i++;
+      }
+
+      timeEmojis = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘"]
+
+      i = 0
+      while (i < 9) {
+        articleSlug = tipuesearch.pages[i].loc.slice(20, -5)
+        articleData = json.requests.data.find(element => element.data == articleSlug)
+        articleContainer = document.createElement("div");
+        articleContainer.classList.add('articleContainer');
+        articleName = document.createElement('a');
+        articleName.innerHTML = timeEmojis[i] + " " + articleData.data.replace(/-/g, ' ').replace(/_/g, ' ');
+        articleName.classList.add('articleName')
+        articleName.href = "https://ilearned.eu/" + articleData.data + ".html";
+        articleView = document.createElement('p');
+        articleView.innerHTML = articleData.visitors.count + " Visiteurs";
+        articleView.classList.add('visitCount')
+        articleContainer.appendChild(articleName);
+        articleContainer.appendChild(articleView);
+        document.getElementById('latest').appendChild(articleContainer);
 
         i++;
       }
     });
-
-
-    const fuse2 = new Fuse(json.referring_sites.data, {
-      keys: ['data']
-    })
-
-    document.getElementById("referrerSearchInput").addEventListener("input", function(e) {
-      searchResult = fuse2.search(this.value);
-
-      while (document.getElementById('referrerSearch').childNodes.length > 5) {
-        document.getElementById('referrerSearch').removeChild(document.getElementById('referrerSearch').lastChild);
-      }
-
-      i = 0
-      while (i < 6) {
-        foundElement = searchResult[i].item
-        articleContainer = document.createElement("div");
-        articleContainer.classList.add('articleContainer');
-        articleName = document.createElement('a');
-        articleName.innerHTML = foundElement.data.replace(/-/g, ' ').replace(/_/g, ' ');
-        articleName.classList.add('articleName')
-        articleName.href = "https://" + foundElement.data;
-        articleView = document.createElement('p');
-        articleView.innerHTML = foundElement.visitors.count + " Visiteurs";
-        articleView.classList.add('visitCount')
-        articleContainer.appendChild(articleName);
-        articleContainer.appendChild(articleView);
-        document.getElementById('referrerSearch').appendChild(articleContainer);
-
-        i++;
-      }
-    });
-
-    i = 0
-    while (i < 9) {
-      articleContainer = document.createElement("div");
-      articleContainer.classList.add('articleContainer');
-      articleName = document.createElement('a');
-      articleName.innerHTML = numberEmojis[i] + " " + referData[i].data.replace(/www./g, '');
-      articleName.classList.add('articleName')
-      articleName.href = "https://" + referData[i].data;
-      articleView = document.createElement('p');
-      articleView.innerHTML = referData[i].visitors.count + " Visiteurs";
-      articleView.classList.add('visitCount')
-      articleContainer.appendChild(articleName);
-      articleContainer.appendChild(articleView);
-      document.getElementById('refer').appendChild(articleContainer);
-
-      i++;
-    }
-
-    timeEmojis = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘"]
-
-    i = 0
-    while (i < 9) {
-      articleSlug = tipuesearch.pages[i].loc.slice(20, -5)
-      articleData = json.requests.data.find(element => element.data == articleSlug)
-      articleContainer = document.createElement("div");
-      articleContainer.classList.add('articleContainer');
-      articleName = document.createElement('a');
-      articleName.innerHTML = timeEmojis[i] + " " + articleData.data.replace(/-/g, ' ').replace(/_/g, ' ');
-      articleName.classList.add('articleName')
-      articleName.href = "https://ilearned.eu/" + articleData.data + ".html";
-      articleView = document.createElement('p');
-      articleView.innerHTML = articleData.visitors.count + " Visiteurs";
-      articleView.classList.add('visitCount')
-      articleContainer.appendChild(articleName);
-      articleContainer.appendChild(articleView);
-      document.getElementById('latest').appendChild(articleContainer);
-
-      i++;
-    }
-  });
+}
 
 function updateGraphDays() {
-  fetch("data.json")
+  fetch(dataSource)
     .then(response => response.json())
     .then(function(json) {
       days = []
@@ -235,7 +279,7 @@ function updateGraphDays() {
 }
 
 function updateGraphMonths() {
-  fetch("data.json")
+  fetch(dataSource)
     .then(response => response.json())
     .then(function(json) {
       document.querySelector(".button.active").classList.remove("active")
@@ -313,7 +357,7 @@ function updateGraphMonths() {
 }
 
 function updateGraphYears() {
-  fetch("data.json")
+  fetch(dataSource)
     .then(response => response.json())
     .then(function(json) {
       document.querySelector(".button.active").classList.remove("active")
@@ -389,4 +433,5 @@ function updateGraphYears() {
       });
     });
 }
+
 updateGraphDays()
