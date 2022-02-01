@@ -22,6 +22,7 @@ for (var i = 0; i < dataSources.length; i++) {
 
 document.getElementById('selectDataSource').addEventListener('change', function () {
   dataSource = dataSources[this.selectedIndex].file
+  updateGraphDays()
   updateData(dataSource)
 })
 
