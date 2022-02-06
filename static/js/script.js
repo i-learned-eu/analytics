@@ -55,7 +55,6 @@ function updateData(dataSource, tipueUri) {
           fetch(dataSource)
             .then(response => response.json())
             .then(function(json) {
-              console.log(json)
               document.getElementById('articleCount').children[1].innerHTML = tipuesearchData.pages.length + " Articles publiés";
 
               i = 0;
@@ -212,7 +211,7 @@ function updateData(dataSource, tipueUri) {
 
               i = 0
               while (i < 9) {
-                articleSlug = tipuesearchData.pages[i].loc.slice(20, -5)
+                articleSlug = result = /[^/]*$/.exec(tipuesearchData.pages[i].loc)[0].slice(0, -5);
                 articleData = json.requests.data.find(element => element.data == articleSlug)
                 articleContainer = document.createElement("div");
                 articleContainer.classList.add('articleContainer');
@@ -241,8 +240,6 @@ function updateData(dataSource, tipueUri) {
     fetch(dataSource)
       .then(response => response.json())
       .then(function(json) {
-        console.log(json)
-
         i = 0;
 
         document.getElementById('today').children[1].innerHTML = json.visitors.data[0].visitors.count + " Visites";
