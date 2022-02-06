@@ -56,7 +56,7 @@ function updateData(dataSource, tipueUri) {
             .then(response => response.json())
             .then(function(json) {
               console.log(json)
-              document.getElementById('articleCount').children[1].innerHTML = tipuesearch.pages.length + " Articles publiés";
+              document.getElementById('articleCount').children[1].innerHTML = tipuesearchData.pages.length + " Articles publiés";
 
               i = 0;
 
@@ -102,7 +102,7 @@ function updateData(dataSource, tipueUri) {
                 document.getElementById('top10').appendChild(articleContainer);
                 i++;
 
-                if (i + 1 > tipuesearch.pages.length) {
+                if (i + 1 > tipuesearchData.pages.length) {
                   break;
                 }
               }
@@ -116,8 +116,8 @@ function updateData(dataSource, tipueUri) {
                 if ((obj.data.includes("author")) || (obj.data.includes("about"))) {
                   hasVal = true;
                 } else {
-                  for (let key in tipuesearch.pages) {
-                    if (tipuesearch.pages[key].loc == loc) {
+                  for (let key in tipuesearchData.pages) {
+                    if (tipuesearchData.pages[key].loc == loc) {
                       hasVal = true;
                       break;
                     }
@@ -212,7 +212,7 @@ function updateData(dataSource, tipueUri) {
 
               i = 0
               while (i < 9) {
-                articleSlug = tipuesearch.pages[i].loc.slice(20, -5)
+                articleSlug = tipuesearchData.pages[i].loc.slice(20, -5)
                 articleData = json.requests.data.find(element => element.data == articleSlug)
                 articleContainer = document.createElement("div");
                 articleContainer.classList.add('articleContainer');
@@ -228,7 +228,7 @@ function updateData(dataSource, tipueUri) {
                 document.getElementById('latest').appendChild(articleContainer);
                 i++;
 
-                if (i + 1 > tipuesearch.pages.length) {
+                if (i + 1 > tipuesearchData.pages.length) {
                   break;
                 }
               }
