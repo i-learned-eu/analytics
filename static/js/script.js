@@ -2,7 +2,11 @@ dataSources = [
   {
     name: "Blog FR",
     file: "blog-french.json",
-    tipueUri: "https://ilearned.eu/tipuesearch_content.js"
+    tipueUri: "https://blog.ilearned.eu/tipuesearch_content.js"
+  },
+  {
+    name: "Main",
+    file: "main.json"
   },
   {
     name: "Blog EN",
