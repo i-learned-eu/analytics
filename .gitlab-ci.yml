@@ -3,6 +3,7 @@ default:
     before_script:
         - apk add nodejs make
         - npm install node-sass
+        - echo 'export PATH="$PATH:$HOME/node_modules/.bin"'
     tags:
         - AMD64
 
