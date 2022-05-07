@@ -1,3 +1,11 @@
+default:
+    image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder
+    before_script:
+        - apk add node make
+        - node install node-sass
+    tags:
+        - AMD64
+
 stages:
   - test-deploy
   - prod-deploy
@@ -5,13 +13,11 @@ stages:
 test-deploy-job:
   stage: test-deploy
   script:
-    - apk add make
     - make
 
 prod-deploy-job:
   stage: prod-deploy
   script:
-    - apk add make
     - make
     - rm -rf static/sass
     - apk add --no-cache openssh rsync
