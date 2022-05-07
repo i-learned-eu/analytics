@@ -1,7 +1,7 @@
 default:
     image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder
     before_script:
-        - apk add node make
+        - apk add nodejs make
         - node install node-sass
     tags:
         - AMD64
