@@ -5,11 +5,13 @@ stages:
 test-deploy-job:
   stage: test-deploy
   script:
+    - apk add make
     - make
 
 prod-deploy-job:
   stage: prod-deploy
   script:
+    - apk add make
     - make
     - rm -rf static/sass
     - apk add --no-cache openssh rsync
