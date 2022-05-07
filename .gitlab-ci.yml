@@ -1,9 +1,9 @@
 default:
     image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder
     before_script:
-        - apk add nodejs make
-        - npm install node-sass
-        - echo 'export PATH="$PATH:$HOME/node_modules/.bin"'
+        - apk add npm make
+        - npm i node-sass
+        - export PATH="$PATH:$HOME/node_modules/node-sass/bin"
     tags:
         - AMD64
 
