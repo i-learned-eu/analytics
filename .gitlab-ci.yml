@@ -2,9 +2,15 @@ stages:
   - test-deploy
   - prod-deploy
 
+test-deploy-job:
+  stage: test-deploy
+    - make
+
 prod-deploy-job:
   stage: prod-deploy
   script:
+    - make
+    - rm -rf static/sass
     - apk add --no-cache openssh rsync
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
