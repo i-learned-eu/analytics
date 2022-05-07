@@ -4,6 +4,7 @@ stages:
 
 test-deploy-job:
   stage: test-deploy
+  script:
     - make
 
 prod-deploy-job:
