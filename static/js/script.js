@@ -5,6 +5,10 @@ dataSources = [
     tipueUri: "https://blog.ilearned.eu/tipuesearch_content.js"
   },
   {
+    name: "Main",
+    file: "main.json"
+  },
+  {
     name: "Blog EN",
     file: "blog-english.json",
     tipueUri: "https://en.ilearned.eu/tipuesearch_content.js"
