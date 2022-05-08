@@ -1,2 +1,4 @@
 blog-french.json
 blog-english.json
+*.css
+*.css.map
