@@ -20,7 +20,7 @@ prod-deploy-job:
   stage: prod-deploy
   script:
     - make
-    - rm -rf static/sass
+    - rm -rf static/sass node_modules
     - wget https://github.com/tdewolff/minify/releases/download/v2.10.0/minify_linux_amd64.tar.gz
     - tar -xf minify_linux_amd64.tar.gz -C /tmp
     - /tmp/minify -r -o ./ ./
