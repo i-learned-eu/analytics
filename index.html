@@ -1,70 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>I Learned Analytics</title>
-  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="https://cdn.ilearned.eu/css/base.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
   <link rel="shortcut icon" href="static/img/favicon.png">
 </head>
-<body>
-<section class="smallStats">
-  <div class="lightCard card" id="changeDataSource">
-    <h1>Data source</h1>
-    <select id="selectDataSource">
 
-    </select>
-  </div>
-  <div class="lightCard card" id="today">
-    <h1>Aujourd'hui</h1>
-    <p class="visitCount">255 Visites</p>
-    <p class="visitPercent">+10%</p>
-  </div>
-  <div class="lightCard card" id="week">
-    <h1>Cette semaine</h1>
-    <p class="visitCount">255 Visites</p>
-    <p class="visitPercent">+10%</p>
-  </div>
-  <div class="lightCard card" id="total">
-    <h1>Au total</h1>
-    <p class="visitCount">255 Visites</p>
-  </div>
-  <div class="lightCard card" id="articleCount">
-    <h1>Articles</h1>
-    <p class="visitCount">255 Visites</p>
-  </div>
-</section>
-<section class="advancedStats">
-  <div class="darkCard card" id="top10">
-    <h1>📰 Les plus lus</h1>
-  </div>
-  <div class="darkCard card" id="latest">
-    <h1>⌛ Derniers articles</h1>
-  </div>
-  <div class="darkCard card" id="search">
-    <h1>📰 🔎 Recherche d'articles</h1>
-    <input type="text" placeholder="Systemd" id="searchInput">
-  </div>
-  <div class="darkCard card" id="graph">
-    <h1>📊 Graph</h1>
-    <canvas id="graphCanvas"></canvas>
-    <div class="buttons">
-      <a class="active button" onclick="updateGraphDays()">Jours</a>
-      <a class="button" onclick="updateGraphMonths()">Mois</a>
-      <a class="button" onclick="updateGraphYears()">Années</a>
+<body>
+  <header>
+    <div class="left">
+      <img src="https://cdn.ilearned.eu/img/logo.svg" alt="Logo de I Learned" />
+      <h2>I Learned</h2>
     </div>
-  </div>
-  <div class="darkCard card" id="refer">
-    <h1>🔗 Referrers</h1>
-  </div>
-  <div class="darkCard card" id="referrerSearch">
-    <h1>🔗 🔎 Recherche de referrers</h1>
-    <input type="text" placeholder="google.com" id="referrerSearchInput">
-  </div>
-</section>
+    <div onclick="openMenu()" id="menuIcon">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="right">
+      <a href="https://ilearned.eu">🏠 À Propos d'I learned</a>
+    </div>
+  </header>
+  <main>
+    <section class="smallStats">
+      <div class="cardContent card " id="changeDataSource">
+        <h1>Data source</h1>
+        <select class="button" id="selectDataSource">
+
+        </select>
+      </div>
+      <div class="cardContent card" id="today">
+        <h1>Aujourd'hui</h1>
+        <p class="visitCount">255 Visites</p>
+        <p class="visitPercent">+10%</p>
+      </div>
+      <div class="cardContent card" id="week">
+        <h1>Cette semaine</h1>
+        <p class="visitCount">255 Visites</p>
+        <p class="visitPercent">+10%</p>
+      </div>
+      <div class="cardContent card" id="total">
+        <h1>Au total</h1>
+        <p class="visitCount">255 Visites</p>
+      </div>
+      <div class="cardContent card" id="articleCount">
+        <h1>Articles</h1>
+        <p class="visitCount">255 Visites</p>
+      </div>
+    </section>
+    <section class="advancedStats">
+      <div class="cardContent card" id="top10">
+        <h1>📰 Les plus lus</h1>
+      </div>
+      <div class="cardContent card" id="latest">
+        <h1>⌛ Derniers articles</h1>
+      </div>
+      <div class="cardContent card" id="search">
+        <h1>📰 🔎 Recherche d'articles</h1>
+        <input type="text" class="button" placeholder="Systemd" id="searchInput">
+      </div>
+      <div class="cardContent card" id="graph">
+        <h1>📊 Graph</h1>
+        <canvas id="graphCanvas"></canvas>
+        <div class="buttons">
+          <a class="active button" onclick="updateGraphDays()">Jours</a>
+          <a class="button" onclick="updateGraphMonths()">Mois</a>
+          <a class="button" onclick="updateGraphYears()">Années</a>
+        </div>
+      </div>
+      <div class="cardContent card" id="refer">
+        <h1>🔗 Referrers</h1>
+      </div>
+      <div class="cardContent card" id="referrerSearch">
+        <h1>🔗 🔎 Recherche de referrers</h1>
+        <input class="button" type="text" placeholder="google.com" id="referrerSearchInput">
+      </div>
+    </section>
+  </main>
+</body>
+<script src="https://blog.ilearned.eu/theme/js/tipuesearch.min.js" charset="utf-8"></script>
 <script src="static/js/fuse.js" charset="utf-8"></script>
 <script src="static/js/chart.js" charset="utf-8"></script>
 <script src="static/js/script.js" charset="utf-8"></script>
-</body>
+
 </html>
