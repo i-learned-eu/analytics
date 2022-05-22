@@ -1,26 +1,10 @@
-default:
-    image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder
-    before_script:
-        - apk add npm make
-        - npm i node-sass
-        - export PATH="$PATH:$HOME/node_modules/node-sass/bin"
-    tags:
-        - AMD64
-
 stages:
   - test-deploy
   - prod-deploy
 
-test-deploy-job:
-  stage: test-deploy
+prod-deploy-job: 
+  stage: prod-deploy  
   script:
-    - make
-
-prod-deploy-job:
-  stage: prod-deploy
-  script:
-    - make
-    - rm -rf static/sass
     - apk add --no-cache openssh rsync
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
@@ -30,3 +14,12 @@ prod-deploy-job:
     - rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" . deploy@vm01.eban.eu.org:/var/www/ilearned-analytics
   only:
   - main
+
+test-deploy-job:
+  image: hub.ilearned.eu/i-learned/ci-cd/pelican-builder-dev
+  stage: test-deploy
+  script: 
+    - pelican
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir output
+  only:
+    - merge_requests
